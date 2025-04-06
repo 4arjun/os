@@ -5,10 +5,9 @@
 void lfuPageReplacement(int pages[], int n, int frames) {
     int memory[frames];
     int freq[frames];
-    int time[frames]; // To break ties when frequency is same
+    int time[frames]; 
     int count = 0, pageFaults = 0, currentTime = 0;
 
-    // Initialize memory
     for (int i = 0; i < frames; i++) {
         memory[i] = -1;
         freq[i] = 0;
@@ -19,7 +18,6 @@ void lfuPageReplacement(int pages[], int n, int frames) {
         int page = pages[i];
         int found = 0;
 
-        // Check if page is already in memory
         for (int j = 0; j < frames; j++) {
             if (memory[j] == page) {
                 freq[j]++;
@@ -29,16 +27,13 @@ void lfuPageReplacement(int pages[], int n, int frames) {
             }
         }
 
-        // Page not found – page fault
         if (!found) {
             int replaceIndex = -1;
 
-            // If there's space, use next empty frame
             if (count < frames) {
                 replaceIndex = count;
                 count++;
             } else {
-                // Find LFU page (break tie using LRU logic)
                 int minFreq = MAX;
                 int oldestTime = MAX;
                 for (int j = 0; j < frames; j++) {
@@ -56,7 +51,6 @@ void lfuPageReplacement(int pages[], int n, int frames) {
             pageFaults++;
         }
 
-        // Print current memory state
         printf("Step %d: ", i + 1);
         for (int j = 0; j < count; j++) {
             printf("%d ", memory[j]);
